@@ -1,4 +1,4 @@
-﻿using GeekShopping.Web.Models;
+﻿    using GeekShopping.Web.Models;
 using GeekShopping.Web.Services.IServices;
 using Microsoft.AspNetCore.Mvc;
 
@@ -31,7 +31,7 @@ namespace GeekShopping.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                var response = await _productService.CreateProduct(model);
+                 var response = await _productService.CreateProduct(model);
                 if (response != null) return RedirectToAction(
                      nameof(ProductIndex));
             }

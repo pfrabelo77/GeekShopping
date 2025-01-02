@@ -34,7 +34,7 @@ namespace GeekShopping.Web.Services
         public async Task<ProductModel> CreateProduct(ProductModel model)
         {
             string ApiAction = "Create";
-            var response = await _client.PostAsJson($"{BasePath}/{ApiAction}", model);
+            var response = await _client.PostAsJsonAsync($"{BasePath}/{ApiAction}", model);
             if (response.IsSuccessStatusCode)
                 return await response.ReadContentAs<ProductModel>();
             else throw new Exception("Something went wrong when calling API");
@@ -42,7 +42,7 @@ namespace GeekShopping.Web.Services
         public async Task<ProductModel> UpdateProduct(ProductModel model)
         {
             string ApiAction = "Update";
-            var response = await _client.PutAsJson($"{BasePath}/{ApiAction}", model);
+            var response = await _client.PutAsJsonAsync($"{BasePath}/{ApiAction}", model);
             if (response.IsSuccessStatusCode)
                 return await response.ReadContentAs<ProductModel>();
             else throw new Exception("Something went wrong when calling API");

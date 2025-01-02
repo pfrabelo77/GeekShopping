@@ -6,7 +6,8 @@ namespace GeekShopping.Web.Utils
 {
     public static class HttpClientExtensions
     {
-        private static MediaTypeHeaderValue contentType = new MediaTypeHeaderValue("application/json");
+        private static MediaTypeHeaderValue contentType
+             = new MediaTypeHeaderValue("application/json");
         public static async Task<T> ReadContentAs<T>(
             this HttpResponseMessage response)
         {
@@ -20,32 +21,28 @@ namespace GeekShopping.Web.Utils
                 { PropertyNameCaseInsensitive = true });
         }
 
-        public static Task<HttpResponseMessage> GetAsJson<T>(this HttpClient httpClient, string url, T data)
+        public static Task<HttpResponseMessage> PostAsJson<T>(
+            this HttpClient httpClient,
+            string url,
+            T data)
         {
             var dataAsString = JsonSerializer.Serialize(data);
             var content = new StringContent(dataAsString);
             content.Headers.ContentType = contentType;
-            return httpClient.GetAsync(url);
-
+            return httpClient.PostAsync(url, content);
         }
 
-        public static Task<HttpResponseMessage> PostAsJson<T>(this HttpClient httpClient, string url, T data)
-        {
-            var dataAsString = JsonSerializer.Serialize(data);
-            var content = new StringContent(dataAsString);
-            content.Headers.ContentType = contentType;  
-            return httpClient.PostAsJson(url, content);
-
-        }
-
-        public static Task<HttpResponseMessage> PutAsJson<T>(this HttpClient httpClient, string url, T data)
+        public static Task<HttpResponseMessage> PutAsJson<T>(
+            this HttpClient httpClient,
+            string url,
+            T data)
         {
             var dataAsString = JsonSerializer.Serialize(data);
             var content = new StringContent(dataAsString);
             content.Headers.ContentType = contentType;
-            return httpClient.PutAsJson(url, content);
-
+            return httpClient.PutAsync(url, content);
         }
+
 
     }
 }

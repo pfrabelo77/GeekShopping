@@ -36,7 +36,7 @@ namespace GeekShopping.ProductApi.Controllers
             
         }
 
-        [HttpPost]
+        [HttpPost("Create")]
         public async Task<ActionResult<ProductVO>> Create([FromBody] ProductVO productVO)
         {
            if (productVO == null) { return BadRequest(); }
@@ -46,7 +46,7 @@ namespace GeekShopping.ProductApi.Controllers
 
         }
 
-        [HttpPut]
+        [HttpPut("Update")]
         public async Task<ActionResult<ProductVO>> Update([FromBody] ProductVO productVO)
         {
             if (productVO == null) { return BadRequest(); }
@@ -56,7 +56,7 @@ namespace GeekShopping.ProductApi.Controllers
 
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("Delete/{id}")]
         public async Task<ActionResult> Delete(long id)
         {
             var status = await _repository.Delete(id);

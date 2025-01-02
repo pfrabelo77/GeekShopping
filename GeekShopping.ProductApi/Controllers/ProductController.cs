@@ -27,7 +27,7 @@ namespace GeekShopping.ProductApi.Controllers
 
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("FindById/{id}")]
         public async Task<ActionResult<ProductVO>> FindById(long id)
         {
             var product = await _repository.FindById(id);
@@ -37,7 +37,7 @@ namespace GeekShopping.ProductApi.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<ProductVO>> Create(ProductVO productVO)
+        public async Task<ActionResult<ProductVO>> Create([FromBody] ProductVO productVO)
         {
            if (productVO == null) { return BadRequest(); }
            var product = await _repository.Create(productVO);
@@ -47,7 +47,7 @@ namespace GeekShopping.ProductApi.Controllers
         }
 
         [HttpPut]
-        public async Task<ActionResult<ProductVO>> Update(ProductVO productVO)
+        public async Task<ActionResult<ProductVO>> Update([FromBody] ProductVO productVO)
         {
             if (productVO == null) { return BadRequest(); }
             var product = await _repository.Update(productVO);

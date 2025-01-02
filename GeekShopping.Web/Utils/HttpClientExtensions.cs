@@ -1,26 +1,51 @@
-﻿using System.Text.Json;
+﻿using GeekShopping.Web.Models;
+using System.Net.Http.Headers;
+using System.Text.Json;
 
 namespace GeekShopping.Web.Utils
 {
     public static class HttpClientExtensions
     {
-        public static async Task<T> ReadContentAs<T>(this HttpResponseMessage response)
+        private static MediaTypeHeaderValue contentType = new MediaTypeHeaderValue("application/json");
+        public static async Task<T> ReadContentAs<T>(
+            this HttpResponseMessage response)
         {
-            if (!response.IsSuccessStatusCode)
-            {
-                throw new ApplicationException
-                    (
-                    $"Algo aconteceu de errado chamando a Api: " +
-                    $"{response.ReasonPhrase}");
-            }
-            else
-            {
-                var dataAsString = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-                var jsonSerializeOptions = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
-                var dataAsJson = JsonSerializer.Deserialize<T>(dataAsString, jsonSerializeOptions);
-                return dataAsJson;
-
-            }
+            if (!response.IsSuccessStatusCode) throw
+                     new ApplicationException(
+                         $"Something went wrong calling the API: " +
+                         $"{response.ReasonPhrase}");
+            var dataAsString = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+            return JsonSerializer.Deserialize<T>(dataAsString,
+                new JsonSerializerOptions
+                { PropertyNameCaseInsensitive = true });
         }
+
+        public static Task<HttpResponseMessage> GetAsJson<T>(this HttpClient httpClient, string url, T data)
+        {
+            var dataAsString = JsonSerializer.Serialize(data);
+            var content = new StringContent(dataAsString);
+            content.Headers.ContentType = contentType;
+            return httpClient.GetAsync(url);
+
+        }
+
+        public static Task<HttpResponseMessage> PostAsJson<T>(this HttpClient httpClient, string url, T data)
+        {
+            var dataAsString = JsonSerializer.Serialize(data);
+            var content = new StringContent(dataAsString);
+            content.Headers.ContentType = contentType;  
+            return httpClient.PostAsJson(url, content);
+
+        }
+
+        public static Task<HttpResponseMessage> PutAsJson<T>(this HttpClient httpClient, string url, T data)
+        {
+            var dataAsString = JsonSerializer.Serialize(data);
+            var content = new StringContent(dataAsString);
+            content.Headers.ContentType = contentType;
+            return httpClient.PutAsJson(url, content);
+
+        }
+
     }
 }

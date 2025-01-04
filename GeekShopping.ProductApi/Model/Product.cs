@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace GeekShopping.ProductApi.Model
 {
     [Table("Product")]
-    public class Product : BaseEntity
+    public partial class Product : BaseEntity
     {
         [Column("name")]
         public string Name { get; set; }

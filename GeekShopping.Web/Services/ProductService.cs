@@ -21,7 +21,7 @@ namespace GeekShopping.Web.Services
         public async Task<IEnumerable<ProductModel>> FindAllProducts(string token)
         {
             string ApiAction = "FindAll";
-            _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            //_client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
             HttpResponseMessage response = await _client.GetAsync($"{BasePath}/{ApiAction}");
             return await response.ReadContentAs<IEnumerable<ProductModel>>(); 
 

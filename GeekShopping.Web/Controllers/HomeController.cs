@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using GeekShopping.Web.Models;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -20,11 +21,14 @@ namespace GeekShopping.Web.Controllers
         }
 
         [Authorize]
+        [HttpGet("Login")]
         public async Task<IActionResult> Login()
         {
+            var accessToken = await HttpContext.GetTokenAsync("access_token");
             return RedirectToAction(nameof(Index));
         }
 
+        [HttpGet("Logout")]
         public IActionResult Logout()
         {
             return SignOut("Cookies","oidc");

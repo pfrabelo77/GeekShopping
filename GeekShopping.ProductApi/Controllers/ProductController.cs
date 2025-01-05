@@ -1,9 +1,7 @@
 ﻿using GeekShopping.ProductApi.Data.ValueObjects;
-using GeekShopping.ProductApi.Model;
 using GeekShopping.ProductApi.Repository;
 using GeekShopping.ProductApi.Utils;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GeekShopping.ProductApi.Controllers

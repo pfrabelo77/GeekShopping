@@ -27,7 +27,6 @@ namespace GeekShopping.Web.Controllers
             _cartService = cartService;
         }
 
-        [HttpGet]
         public async Task<IActionResult> Index()
         {
             var products = await _productService.FindAllProducts("");
@@ -49,24 +48,26 @@ namespace GeekShopping.Web.Controllers
         {
             var token = await HttpContext.GetTokenAsync("access_token");
 
-            CartViewModel cart = new()
-            {
-                CartHeader = new CartHeaderViewModel
-                {
-                    UserId = User.Claims.Where(u => u.Type == "sub")?.FirstOrDefault()?.Value
-                }
-            };
+            CartViewModel cart = new CartViewModel();
 
-            CartDetailViewModel cartDetail = new CartDetailViewModel()
+            cart.CartHeader = new CartHeaderViewModel
             {
+                UserId = User.Claims.Where(u => u.Type == "sub")?.FirstOrDefault()?.Value,
+                CouponCode = "teste"
+            };
+            
+
+             cart.CartDetails = new CartDetailViewModel[] { new CartDetailViewModel{
                 Count = model.Count,
                 ProductId = model.Id,
-                Product = await _productService.FindProductById(model.Id, token)
-            };
-
-            List<CartDetailViewModel> cartDetails = new List<CartDetailViewModel>();
-            cartDetails.Add(cartDetail);
-            cart.CartDetails = cartDetails;
+                Product = await _productService.FindProductById(model.Id, token),
+                CartHeader = new CartHeaderViewModel
+                {
+                    UserId = User.Claims.Where(u => u.Type == "sub")?.FirstOrDefault()?.Value,
+                    CouponCode = "teste"
+                }
+            } };
+        
 
             var response = await _cartService.AddItemToCart(cart, token);
             if(response != null)

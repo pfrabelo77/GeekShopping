@@ -1,21 +1,29 @@
+using GeekShopping.CartAPI.Repository;
 using GeekShopping.OrderApi.Model.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
+
 var builder = WebApplication.CreateBuilder(args);
 
-//Obter a connection String metodo1
-//var configurationBuilder = new ConfigurationBuilder();
-//var configuration = configurationBuilder.AddJsonFile("appsettings.json").Build();
-//var conn = configuration["MySQLConnection:MySQLConnectionString"];
-//Obter a connection String metodo1
-var conn = builder.Configuration["MySQLConnection:MySQLConnectionString"];
+var connection = builder.Configuration["MySQLConnection:MySQLConnectionString"];
 
-//builder.Services.AddScoped<ICartRepository, CartRepository>();
-//builder.Services.AddSingleton<IRabbitMQMessageSender, RabbitMQMessageSender>();
+builder.Services.AddDbContext<MySQLServerContext>(options => options.
+                UseMySql(connection,
+                        new MySqlServerVersion(
+                            new Version(8, 0, 40))));
 
 
+var builderMySql = new DbContextOptionsBuilder<MySQLServerContext>();
+builderMySql.UseMySql(connection,
+            new MySqlServerVersion(
+                new Version(8, 0, 40)));
+
+builder.Services.AddSingleton(new OrderRepository(builderMySql.Options));
+
+//builder.Services.AddHostedService<RabbitMQCheckoutConsumer>();
 
 // Add services to the container.
 
@@ -72,10 +80,6 @@ builder.Services.AddSwaggerGen(c =>
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddDbContext<MySQLServerContext>(options => options.
-    UseMySql(conn,
-            new MySqlServerVersion(
-                new Version(8, 0, 40))));
 
 
 

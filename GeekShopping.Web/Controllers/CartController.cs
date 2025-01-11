@@ -116,7 +116,10 @@ namespace GeekShopping.Web.Controllers
         public async Task<IActionResult> Checkout(CartViewModel model)
         {
             var token = await HttpContext.GetTokenAsync("access_token");
-
+            if (model.CartHeader.CouponCode == null)
+            {
+                model.CartHeader.CouponCode = "";
+            }
             var response = await _cartService.Checkout(model.CartHeader, token);
 
             if (response != null && response.GetType() == typeof(string))

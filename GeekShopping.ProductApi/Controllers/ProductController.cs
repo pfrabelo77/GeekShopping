@@ -19,6 +19,7 @@ namespace GeekShopping.ProductApi.Controllers
 
 
         [HttpGet("FindAll")]
+        //[HttpGet]
         //[Authorize]
         public async Task<ActionResult<IEnumerable<ProductVO>>> FindAll()
         {

@@ -40,6 +40,7 @@ namespace GeekShopping.ProductApi.Controllers
         }
 
         [HttpPost("Create")]
+        //[HttpPost]
         [Authorize]
         public async Task<ActionResult<ProductVO>> Create([FromBody] ProductVO productVO)
         {
@@ -51,6 +52,7 @@ namespace GeekShopping.ProductApi.Controllers
         }
 
         [HttpPut("Update")]
+        //[HttpPut]
         [Authorize]
         public async Task<ActionResult<ProductVO>> Update([FromBody] ProductVO productVO)
         {
